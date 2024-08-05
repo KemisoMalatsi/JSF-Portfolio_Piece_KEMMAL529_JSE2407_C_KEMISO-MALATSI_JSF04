@@ -1,6 +1,6 @@
 <template>
   <header class="sticky z-50 top-0">
-    <nav class="bg-gray-500 border-gray-200">
+    <nav class="bg-gray-500 border-gray-200 p-0">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <router-link to="/">
           <button class="flex items-center space-x-3 rtl:space-x-reverse">
