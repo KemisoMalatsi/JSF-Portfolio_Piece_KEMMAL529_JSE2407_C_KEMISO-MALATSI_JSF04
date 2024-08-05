@@ -14,7 +14,7 @@
             </div>
           </h2>
         </header>
-        <Ratings v-bind="rating" />
+        <Ratings :rate="rating.rate" :count="rating.count" />
         <div class="text-base line-clamp-2 font-extrabold text-slate-500 leading-snug">
           <h2>\${{ price }}</h2>
         </div>
