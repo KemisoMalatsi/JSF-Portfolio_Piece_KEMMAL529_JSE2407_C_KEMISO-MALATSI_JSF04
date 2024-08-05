@@ -10,7 +10,7 @@ export const useProductStore = defineStore('product', {
     async fetchProducts() {
       this.loading = true;
       try {
-        // Fetch products from an API or other source
+        // Replace with your actual API call
         this.products = await fetchProductsAPI();
       } catch (error) {
         this.error = error;

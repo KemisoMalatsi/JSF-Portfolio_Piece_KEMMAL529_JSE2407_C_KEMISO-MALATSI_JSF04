@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <Header />
-    <!-- Add a router-view here if you are using routing -->
-    <router-view></router-view>
+    <ProductList />
   </div>
 </template>
 
 <script setup>
-import Header from '../src/components/Header.vue';
+import Header from './components/Header.vue';
+import ProductList from '../src/Product/ProductList.vue';
 </script>
 
 <style>
