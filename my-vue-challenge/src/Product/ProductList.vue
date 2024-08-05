@@ -12,9 +12,9 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useProductStore } from '../store/productStore';
-import ProductCard from '../Product/ProductCard.vue';
-// import CardSkeleton from './CardSkeleton.vue';
+import { useProductStore } from '../../store/productStore';
+import ProductCard from './ProductCard.vue';
+import CardSkeleton from './CardSkeleton.vue';
 import Error from './Error.vue';
 
 const productStore = useProductStore();
