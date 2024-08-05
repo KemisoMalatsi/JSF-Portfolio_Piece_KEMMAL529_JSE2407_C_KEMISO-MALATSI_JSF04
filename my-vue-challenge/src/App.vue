@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <HelloWorld />
+    <Header />
+    <!-- Add a router-view here if you are using routing -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header.vue';
 </script>
 
 <style>
