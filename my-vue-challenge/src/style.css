@@ -1,4 +1,5 @@
-/* body {
+/* Global styles
+body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -102,23 +103,23 @@
   border-radius: 0.5rem;
 }
 
-.md\\:hidden {
+.md-hidden {
   display: none;
 }
 
-.hover\\:bg-gray-100:hover {
+.hover-bg-gray-100:hover {
   background-color: #f3f4f6;
 }
 
-.focus\\:outline-none:focus {
+.focus-outline-none:focus {
   outline: 0;
 }
 
-.focus\\:ring-2:focus {
+.focus-ring-2:focus {
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
 }
 
-.focus\\:ring-gray-200:focus {
+.focus-ring-gray-200:focus {
   box-shadow: 0 0 0 2px #e5e7eb;
 }
 
@@ -130,11 +131,11 @@
   width: 100%;
 }
 
-.md\\:block {
+.md-block {
   display: block;
 }
 
-.md\\:w-auto {
+.md-w-auto {
   width: auto;
 }
 
@@ -166,23 +167,23 @@
   border-radius: 0.5rem;
 }
 
-.md\\:space-x-8 {
-  margin-right: -2rem;
+.md-space-x-8 > *:not(:last-child) {
+  margin-right: 2rem;
 }
 
-.rtl\\:space-x-reverse {
-  direction: rtl;
+.rtl-space-x-reverse > *:not(:last-child) {
+  margin-left: 2rem;
 }
 
-.md\\:flex-row {
+.md-flex-row {
   flex-direction: row;
 }
 
-.md\\:mt-0 {
+.md-mt-0 {
   margin-top: 0;
 }
 
-.md\\:border-0 {
+.md-border-0 {
   border-width: 0;
 }
 
@@ -200,23 +201,23 @@
   padding-right: 0.75rem;
 }
 
-.hover\\:bg-gray-100:hover {
+.hover-bg-gray-100:hover {
   background-color: #f3f4f6;
 }
 
-.md\\:hover\\:bg-transparent:hover {
+.md-hover-bg-transparent:hover {
   background-color: transparent;
 }
 
-.md\\:border-0 {
+.md-border-0 {
   border-width: 0;
 }
 
-.md\\:hover\\:text-blue-700:hover {
+.md-hover-text-blue-700:hover {
   color: #1d4ed8;
 }
 
-.md\\:p-0 {
+.md-p-0 {
   padding: 0;
 }
 
@@ -232,7 +233,7 @@
   left: 0.75rem;
 }
 
-.-top-4 {
+.top--4 {
   top: -1rem;
 }
 
@@ -273,22 +274,22 @@
   cursor: pointer;
 }
 
-.hidden\\:lg\\:block {
+.hidden-lg-block {
   display: none;
 }
 
-.md\\:hidden\\:lg\\:block {
+.md-hidden-lg-block {
   display: none;
 }
 
-.hidden\\:md\\:block {
+.hidden-md-block {
   display: none;
 }
 
-.lg\\:hidden {
+.lg-hidden {
   display: none;
 }
 
-.md\\:hidden {
+.md-hidden {
   display: none;
 } */
