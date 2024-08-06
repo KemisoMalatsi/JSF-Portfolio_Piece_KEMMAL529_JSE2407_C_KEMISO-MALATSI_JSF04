@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Header from './components/Header.vue';
+import Header from '../src/components/Header.vue';
 import Login from '../src/components/Login.vue';
 
 export default {

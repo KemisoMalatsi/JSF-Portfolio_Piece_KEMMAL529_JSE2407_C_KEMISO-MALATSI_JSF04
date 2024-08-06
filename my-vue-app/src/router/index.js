@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../../src/view/Home.vue';
+import Home from '../../src/page/Home.vue';
 import ProductDetails from '../components/ProductDetails.vue';
-import Cart from '../../src/view/Cart.vue';
-import Wishlist from '../../src/view/Wishlist.vue';
+import Cart from '../../src/page/Cart.vue';
+import Wishlist from '../../src/page/Wishlist.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -12,7 +12,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 });
 
