@@ -1,10 +1,10 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router/index';
+import './assets/tailwind.css'
 import store from './store/index'; // import Vuex store
 import Cart from './views/Cart.vue';
 import Wishlist from './views/Wishlist.vue';
-import './assets/index.css'; // Ensure this path is correct
 
 
 // Polyfill for process
