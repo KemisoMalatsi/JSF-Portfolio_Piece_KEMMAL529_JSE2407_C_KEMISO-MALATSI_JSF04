@@ -32,6 +32,10 @@
 export default {
   data() {
     return {
+      /**
+       * A boolean to check if whether the menu is open or closed.
+       * @type {boolean}
+       */
       isOpen: false
     };
   }
@@ -39,5 +43,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
