@@ -1,28 +1,28 @@
 <template>
     <div>
       <ProductList @select-product="selectProduct" />
-      <LoginModal v-if="showLoginModal" @login="handleLogin" @cancel="showLoginModal = false" />
+      <Login v-if="showLogin" @login="handleLogin" @cancel="showLogin = false" />
     </div>
   </template>
   
   <script>
   import ProductList from '../components/ProductList.vue';
-  import LoginModal from '../components/LoginModal.vue';
+  import Login from '../../src/components/Login.vue';
   
   export default {
     components: {
       ProductList,
-      LoginModal
+      Login
     },
     data() {
       return {
-        showLoginModal: false
+        showLogin: false
       };
     },
     methods: {
       handleLogin() {
         this.$store.commit('setIsLoggedIn', true);
-        this.showLoginModal = false;
+        this.showLogin = false;
       },
       selectProduct(product) {
         this.$router.push({ name: 'ProductDetails', params: { id: product.id } });

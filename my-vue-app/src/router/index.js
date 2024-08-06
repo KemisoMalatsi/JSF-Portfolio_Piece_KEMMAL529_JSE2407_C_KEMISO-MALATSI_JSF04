@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
+import Home from '../../src/view/Home.vue';
 import ProductDetails from '../components/ProductDetails.vue';
-import Cart from '../views/Cart.vue';
-import Wishlist from '../views/Wishlist.vue';
+import Cart from '../../src/view/Cart.vue';
+import Wishlist from '../../src/view/Wishlist.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },

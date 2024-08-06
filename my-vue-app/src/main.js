@@ -3,8 +3,8 @@ import App from './App.vue';
 import router from './router/index';
 import './assets/tailwind.css'
 import store from './store/index'; // import Vuex store
-import Cart from './views/Cart.vue';
-import Wishlist from './views/Wishlist.vue';
+import cart from '../src/view/Cart.vue';
+import Wishlist from '../src/view/Wishlist.vue';
 
 
 // Polyfill for process
