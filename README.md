@@ -66,7 +66,7 @@ Follow these steps to set up and run the project locally:
 
 ## Usage
 
-Once the development server is running, you can access the application at `[http://localhost:5173](http://localhost:5173/)` (or the port specified in your configuration).
+Once the development server is running, you can access the application at `[http://localhost:5173/](#http://localhost:5173/)` (or the port specified in your configuration).
 
 ### Browsing Products
 
