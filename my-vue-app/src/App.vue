@@ -1,25 +1,30 @@
-// src/store/wishlist.js
-import { createStore } from 'vuex';
+<template>
+  <div id="app">
+    <Header @toggle-login="showLogin = !showLogin" />
+    <router-view></router-view> <!-- Display routed components -->
+    <Login v-if="showLogin" @login="handleLogin" @cancel="showLogin = false" />
+  </div>
+</template>
 
-export default createStore({
-  state() {
+<script>
+import Header from './components/Header.vue';
+import Login from '../src/components/Login.vue';
+
+export default {
+  components: {
+    Header,
+    Login
+  },
+  data() {
     return {
-      wishlist: []
+      showLogin: false, // Set to false initially
     };
   },
-  mutations: {
-    addToWishlist(state, product) {
-      if (!state.wishlist.find(item => item.id === product.id)) {
-        state.wishlist.push(product);
-      }
-    },
-    removeFromWishlist(state, productId) {
-      state.wishlist = state.wishlist.filter(item => item.id !== productId);
-    }
-  },
-  getters: {
-    wishlistItems(state) {
-      return state.wishlist;
+  methods: {
+    handleLogin() {
+      this.$router.push('/product-list'); // Navigate to product list on login
+      this.showLogin = false;
     }
   }
-});
+};
+</script>
