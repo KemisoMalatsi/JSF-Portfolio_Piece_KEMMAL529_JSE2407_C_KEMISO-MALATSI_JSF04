@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     cart() {
-      return this.$store.getters.cart;
+      return this.$store.getters.cartItems; // Use the getter to filter cart items by user ID
     }
   },
   watch: {
