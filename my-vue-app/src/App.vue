@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <Header @toggle-login="showLogin = !showLogin" />
@@ -17,12 +18,14 @@ export default {
   },
   data() {
     return {
-      showLogin: false, // Set to false initially
+      showLogin: false, 
     };
   },
   methods: {
     handleLogin() {
-      this.$router.push('/product-list'); // Navigate to product list on login
+      this.$store.commit('setIsLoggedIn', true); // Mark user as logged in
+      const redirectPath = this.$route.query.redirect || '/'; // Default to home if no redirect
+      this.$router.push(redirectPath);
       this.showLogin = false;
     }
   }

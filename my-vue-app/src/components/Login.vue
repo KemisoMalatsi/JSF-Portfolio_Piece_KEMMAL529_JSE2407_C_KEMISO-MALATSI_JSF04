@@ -9,7 +9,15 @@
         </div>
         <div class="mb-4">
           <label for="password" class="block mb-2">Password</label>
-          <input type="password" id="password" v-model="password" class="w-full p-2 border rounded">
+          <div class="relative">
+            <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password" class="w-full p-2 border rounded" />
+            <button type="button" @click="togglePasswordVisibility" class="absolute inset-y-0 right-0 px-3 py-2">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+        </div>
+        <div v-if="isLoading" class="loading-spinner mb-4">
+          Authenticating...
         </div>
         <div class="flex justify-end">
           <button type="button" @click="$emit('cancel')" class="bg-gray-200 text-gray-800 py-2 px-4 rounded mr-2">Cancel</button>
@@ -24,33 +32,56 @@
 export default {
   data() {
     return {
-      /**
-       * The username entered by the user.
-       * @type {string}
-       */
-      username: '',
-      
-      /**
-       * The password entered by the user.
-       * @type {string}
-       */
-      password: ''
+      username: '', 
+      password: '',
+      showPassword: false,
+      isLoading: false
     };
   },
   methods: {
-    /**
-     * Handles the login form submission.
-     * Emits a 'login' event if the username and password are correct,
-     * otherwise shows an alert with an error message.
-     */
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
     login() {
-      // Dummy login logic
-      if (this.username === 'user' && this.password === 'pass') {
-        this.$emit('login');
-      } else {
-        alert('Invalid credentials');
+      if (!this.username || !this.password) {
+        alert('Please enter your username and password.');
+        return;
       }
+
+      this.isLoading = true;
+
+      fetch('https://fakestoreapi.com/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        this.isLoading = false;
+        if (data.token) {
+          localStorage.setItem('jwt', data.token);
+          this.$emit('login'); // Inform the parent that login is successful
+        } else {
+          alert('Login failed. Please check your credentials.');
+        }
+      })
+      .catch(error => {
+        this.isLoading = false;
+        alert('An error occurred during login.');
+      });
     }
   }
 };
 </script>
+
+<style scoped>
+.loading-spinner {
+  text-align: center;
+  color: #3b82f6; /* Tailwind blue-500 */
+}
+</style>

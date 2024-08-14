@@ -2,43 +2,25 @@ import { createStore } from 'vuex';
 
 const store = createStore({
   state: {
-    products: [],
-    cart: [],
-    wishlist: [],
-    isLoggedIn: false
+    isLoggedIn: false,  // Authentication state
   },
   mutations: {
-    setProducts(state, products) {
-      state.products = products;
-    },
-    addToCart(state, product) {
-      state.cart.push(product);
-    },
-    removeFromCart(state, productId) {
-      state.cart = state.cart.filter(product => product.id !== productId);
-    },
-    addToWishlist(state, product) {
-      state.wishlist.push(product);
-    },
-    removeFromWishlist(state, productId) {
-      state.wishlist = state.wishlist.filter(product => product.id !== productId);
-    },
     setIsLoggedIn(state, status) {
-      state.isLoggedIn = status;
-    }
+      state.isLoggedIn = status;  // Update authentication state
+    },
   },
   actions: {
-    async fetchProducts({ commit }) {
-      const response = await fetch('https://fakestoreapi.com/products');
-      const products = await response.json();
-      commit('setProducts', products);
+    login({ commit }, token) {
+      localStorage.setItem('jwt', token);  // Store JWT in local storage
+      commit('setIsLoggedIn', true);  // Set state to logged in
+    },
+    logout({ commit }) {
+      localStorage.removeItem('jwt');  // Remove JWT from local storage
+      commit('setIsLoggedIn', false);  // Set state to logged out
     }
   },
   getters: {
-    products: (state) => state.products,
-    cart: (state) => state.cart,
-    wishlist: (state) => state.wishlist,
-    isLoggedIn: (state) => state.isLoggedIn
+    isLoggedIn: state => state.isLoggedIn,  // Getter to access login state
   }
 });
 
