@@ -3,10 +3,10 @@
     <h1 class="text-2xl font-semibold mb-4">Cart</h1>
     <button @click="$router.push('/')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mb-4">Back to Products</button>
 
-    <div v-if="filteredCart.length === 0" class="text-center text-gray-600">Your cart is empty.</div>
+    <div v-if="cartItems.length === 0" class="text-center text-gray-600">Your cart is empty.</div>
     <div v-else>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div v-for="product in filteredCart" :key="product.id" class="product-card border shadow p-4 bg-white">
+        <div v-for="product in cartItems" :key="product.id" class="product-card border shadow p-4 bg-white">
           <img :src="product.image" :alt="product.title" class="h-40 w-full object-contain mb-4" />
           <h2 class="text-lg font-semibold mb-2">{{ product.title }}</h2>
           <p class="text-gray-500 mb-2">{{ product.category }}</p>
@@ -26,7 +26,7 @@
 <script>
 export default {
   computed: {
-    filteredCart() {
+    cartItems() {
       return this.$store.getters.cartItems;
     },
     cartTotal() {
