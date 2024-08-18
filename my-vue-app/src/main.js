@@ -1,19 +1,12 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router/index';
-import './assets/tailwind.css'
-import store from './store/index'; // import Vuex store
-import cart from '../src/page/Cart.vue';
-import Wishlist from '../src/page/Wishlist.vue';
+import router from './router';
+import store from './store';
+import './assets/tailwind.css';
 
+const app = createApp(App);
 
-// Polyfill for process
-import process from 'process';
-window.process = process;
+app.use(router);
+app.use(store);
 
-
-
-createApp(App)
-  .use(router)
-  .use(store) // use Vuex store
-  .mount('#app');
+app.mount('#app');
