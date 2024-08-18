@@ -15,7 +15,11 @@
         <h2 class="text-lg font-semibold mb-2">{{ product.title }}</h2>
         <p class="text-gray-500 mb-2">{{ product.category }}</p>
         <p class="text-blue-500 font-bold mb-2">{{ formatPrice(product.price) }}</p>
-        <p class="text-gray-500 mb-2">Quantity: {{ product.quantity }}</p>
+        <div class="text-gray-500 mb-2 flex items-center">
+          <button @click="updateQuantity(product.id, product.quantity - 1)" class="px-2 py-1 bg-gray-200 rounded">-</button>
+          <span class="mx-4">{{ product.quantity }}</span>
+          <button @click="updateQuantity(product.id, product.quantity + 1)" class="px-2 py-1 bg-gray-200 rounded">+</button>
+        </div>
         <button @click="removeFromCart(product.id)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
           Remove from Cart
         </button>
@@ -47,7 +51,14 @@ export default {
     },
     formatPrice(price) {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
-    }
+    },
+    updateQuantity(productId, newQuantity) {
+      if (newQuantity < 1) {
+        this.removeFromCart(productId); // Remove item if quantity is less than 1
+      } else {
+        this.$store.commit('updateCartQuantity', { productId, quantity: newQuantity });
+      }
+    },
   },
 };
 </script>

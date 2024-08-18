@@ -3,8 +3,7 @@ import { createStore } from 'vuex';
 const store = createStore({
   state() {
     return {
-      cart: [],
-      wishlist: [], // Assuming you might also have a wishlist
+      cart: JSON.parse(localStorage.getItem('cart')) || [],
     };
   },
   mutations: {
@@ -15,20 +14,22 @@ const store = createStore({
       } else {
         state.cart.push({ ...product, quantity: 1 });
       }
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     removeFromCart(state, productId) {
       state.cart = state.cart.filter(item => item.id !== productId);
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     clearCart(state) {
       state.cart = [];
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
-    addToWishlist(state, product) {
-      if (!state.wishlist.find(item => item.id === product.id)) {
-        state.wishlist.push(product);
+    updateCartQuantity(state, { productId, quantity }) {
+      const product = state.cart.find(item => item.id === productId);
+      if (product) {
+        product.quantity = quantity;
+        localStorage.setItem('cart', JSON.stringify(state.cart));
       }
-    },
-    removeFromWishlist(state, productId) {
-      state.wishlist = state.wishlist.filter(item => item.id !== productId);
     },
   },
   actions: {
@@ -38,19 +39,13 @@ const store = createStore({
     removeFromCart({ commit }, productId) {
       commit('removeFromCart', productId);
     },
-    addToWishlist({ commit }, product) {
-      commit('addToWishlist', product);
-    },
-    removeFromWishlist({ commit }, productId) {
-      commit('removeFromWishlist', productId);
+    updateCartQuantity({ commit }, { productId, quantity }) {
+      commit('updateCartQuantity', { productId, quantity });
     },
   },
   getters: {
     cartItems(state) {
       return state.cart;
-    },
-    wishlistItems(state) {
-      return state.wishlist;
     },
     cartTotal(state) {
       return state.cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
