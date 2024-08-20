@@ -31,9 +31,9 @@
     </div>
 
     <!-- Render product list -->
-    <template v-if="!loading && !selectedProduct">
+    <template v-if="!loading && products.length">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div v-for="product in products" :key="product.id" @click="handleProductClick(product)" class="product-card border shadow p-4 bg-white dark:bg-gray-800 text-black dark:text-white cursor-pointer">
+        <div v-for="product in filteredProducts" :key="product.id" class="product-card border shadow p-4 bg-white dark:bg-gray-800 text-black dark:text-white cursor-pointer">
           <img :src="product.image" :alt="product.title" class="h-40 w-full object-contain mb-4" />
           <h2 class="text-lg font-semibold mb-2">{{ product.title }}</h2>
           <p class="text-gray-500 dark:text-gray-300 mb-2">{{ product.category }}</p>
@@ -45,12 +45,72 @@
         </div>
       </div>
     </template>
+
+    <!-- Show a message if no products are found -->
+    <div v-else class="text-center text-gray-600 dark:text-gray-300">
+      No products found.
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  // Existing script code remains unchanged
+  data() {
+    return {
+      products: [],
+      categories: [],
+      selectedCategory: 'all',
+      searchQuery: '',
+      sortOrder: 'default',
+      loading: false,
+    };
+  },
+  computed: {
+    filteredProducts() {
+      let filtered = this.products;
+
+      if (this.selectedCategory !== 'all') {
+        filtered = filtered.filter(product => product.category === this.selectedCategory);
+      }
+
+      if (this.searchQuery) {
+        filtered = filtered.filter(product =>
+          product.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+
+      if (this.sortOrder === 'price-asc') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (this.sortOrder === 'price-desc') {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+
+      return filtered;
+    },
+  },
+  methods: {
+    async getProduct() {
+      this.loading = true;
+      try {
+        const response = await fetch('https://fakestoreapi.com/products');
+        const allProducts = await response.json();
+        this.products = allProducts;
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    addToCart(product) {
+      this.$store.commit('addToCart', product);
+    },
+    addToWishlist(product) {
+      this.$store.commit('addToWishlist', product);
+    },
+  },
+  created() {
+    this.getProduct();
+  },
 };
 </script>
 
