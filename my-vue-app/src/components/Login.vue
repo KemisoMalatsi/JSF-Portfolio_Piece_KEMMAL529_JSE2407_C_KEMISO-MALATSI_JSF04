@@ -53,7 +53,7 @@ export default {
       // Simulate a login process
       setTimeout(() => {
         this.isLoading = false;
-        localStorage.setItem('jwt', 'fake-jwt-token');
+        localStorage.setItem('token', 'fake-jwt-token'); // Simulate setting a JWT token
         this.$emit('login');
       }, 1000);
     }
