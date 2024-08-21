@@ -12,7 +12,9 @@
       </button>
       <div :class="{ 'block': isOpen, 'hidden': !isOpen }" class="w-full md:block md:w-auto">
         <ul class="flex flex-col md:flex-row md:space-x-8">
-          <li><router-link to="/wishlist" class="text-white md:hover:text-blue-700 dark:text-gray-300">Wishlist</router-link></li>
+          <li>
+            <router-link to="/wishlist" class="text-white md:hover:text-blue-700 dark:text-gray-300">Wishlist</router-link>
+          </li>
           <li class="relative hidden md:block">
             <router-link to="/cart" class="text-white md:hover:text-blue-700 dark:text-gray-300">
               <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -20,8 +22,12 @@
               </svg>
             </router-link>
           </li>
-          <li><router-link to="/cart" class="text-white md:hidden dark:text-gray-300">Cart</router-link></li>
-          <li><button @click="$emit('toggle-login')" class="text-white dark:text-gray-300">Login</button></li>
+          <li>
+            <router-link to="/cart" class="text-white md:hidden dark:text-gray-300">Cart</router-link>
+          </li>
+          <li>
+            <button @click="$emit('toggle-login')" class="text-white dark:text-gray-300">Login</button>
+          </li>
           <!-- Add the theme toggle button -->
           <li>
             <button @click="toggleTheme" class="text-white dark:text-gray-300">
@@ -55,7 +61,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Any additional styles for the header can be added here */
-</style>
