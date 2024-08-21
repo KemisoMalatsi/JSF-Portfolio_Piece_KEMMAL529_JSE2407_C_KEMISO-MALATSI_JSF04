@@ -5,7 +5,8 @@ const store = createStore({
     products: [],
     cart: [],
     wishlist: [],
-    isLoggedIn: false
+    isLoggedIn: false,
+    theme: localStorage.getItem('theme') || 'light', // Default to 'light' theme
   },
   mutations: {
     setProducts(state, products) {
@@ -25,7 +26,11 @@ const store = createStore({
     },
     setIsLoggedIn(state, status) {
       state.isLoggedIn = status;
-    }
+    },
+    setTheme(state, theme) {
+      state.theme = theme;
+      localStorage.setItem('theme', theme);
+    },
   },
   actions: {
     async fetchProducts({ commit }) {
@@ -38,7 +43,8 @@ const store = createStore({
     products: (state) => state.products,
     cart: (state) => state.cart,
     wishlist: (state) => state.wishlist,
-    isLoggedIn: (state) => state.isLoggedIn
+    isLoggedIn: (state) => state.isLoggedIn,
+    theme: (state) => state.theme,
   }
 });
 
