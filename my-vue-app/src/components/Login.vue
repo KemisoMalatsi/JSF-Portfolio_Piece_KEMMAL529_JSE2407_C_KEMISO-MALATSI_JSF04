@@ -50,30 +50,12 @@ export default {
 
       this.isLoading = true;
 
-      fetch('https://fakestoreapi.com/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
+      // Simulate a login process
+      setTimeout(() => {
         this.isLoading = false;
-        if (data.token) {
-          localStorage.setItem('jwt', data.token);
-          this.$emit('login'); // Inform the parent that login is successful
-        } else {
-          alert('Login failed. Please check your credentials.');
-        }
-      })
-      .catch(error => {
-        this.isLoading = false;
-        alert('An error occurred during login.');
-      });
+        localStorage.setItem('jwt', 'fake-jwt-token');
+        this.$emit('login');
+      }, 1000);
     }
   }
 };

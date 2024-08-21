@@ -3,10 +3,10 @@ import { createStore } from 'vuex';
 const store = createStore({
   state: {
     products: [],
-    cart: [],
+    cart: JSON.parse(localStorage.getItem('cart')) || [],
     wishlist: [],
     isLoggedIn: false,
-    theme: localStorage.getItem('theme') || 'light', // Default to 'light' theme
+    theme: localStorage.getItem('theme') || 'light',
   },
   mutations: {
     setProducts(state, products) {
@@ -14,22 +14,22 @@ const store = createStore({
     },
     addToCart(state, product) {
       state.cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     removeFromCart(state, productId) {
       state.cart = state.cart.filter(product => product.id !== productId);
-    },
-    addToWishlist(state, product) {
-      state.wishlist.push(product);
-    },
-    removeFromWishlist(state, productId) {
-      state.wishlist = state.wishlist.filter(product => product.id !== productId);
-    },
-    setIsLoggedIn(state, status) {
-      state.isLoggedIn = status;
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     setTheme(state, theme) {
       state.theme = theme;
       localStorage.setItem('theme', theme);
+    },
+    setIsLoggedIn(state, status) {
+      state.isLoggedIn = status;
+    },
+    clearCart(state) {
+      state.cart = [];
+      localStorage.removeItem('cart');
     },
   },
   actions: {
@@ -45,6 +45,7 @@ const store = createStore({
     wishlist: (state) => state.wishlist,
     isLoggedIn: (state) => state.isLoggedIn,
     theme: (state) => state.theme,
+    cartItemCount: (state) => state.cart.length,
   }
 });
 

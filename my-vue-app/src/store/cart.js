@@ -1,55 +1,79 @@
 import { createStore } from 'vuex';
-import * as jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 const store = createStore({
-  state() {
-    return {
-      userId: null,
-      isLoggedIn: false,
-      cart: [],
-      wishlist: [],
-    };
+  state: {
+    products: [],
+    cart: JSON.parse(localStorage.getItem('cart')) || [],
+    wishlist: [],
+    isLoggedIn: false,
+    theme: localStorage.getItem('theme') || 'light',
+    userId: null, // Store the decoded user ID
   },
   mutations: {
-    setUserId(state, userId) {
-      state.userId = userId;
-    },
-    setIsLoggedIn(state, status) {
-      state.isLoggedIn = status;
+    setProducts(state, products) {
+      state.products = products;
     },
     addToCart(state, product) {
       const existingProduct = state.cart.find(item => item.id === product.id);
       if (existingProduct) {
         existingProduct.quantity += 1;
       } else {
-        state.cart.push({ ...product, quantity: 1 });
+        state.cart.push({ ...product, quantity: 1, userId: state.userId });
       }
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     removeFromCart(state, productId) {
-      state.cart = state.cart.filter(item => item.id !== productId);
+      state.cart = state.cart.filter(product => product.id !== productId);
+      localStorage.setItem('cart', JSON.stringify(state.cart));
+    },
+    updateCartItemQuantity(state, { productId, quantity }) {
+      const cartItem = state.cart.find(item => item.id === productId);
+      if (cartItem) {
+        cartItem.quantity = quantity;
+        if (quantity === 0) {
+          state.cart = state.cart.filter(item => item.id !== productId);
+        }
+        localStorage.setItem('cart', JSON.stringify(state.cart));
+      }
     },
     clearCart(state) {
       state.cart = [];
-    }
-  },
-  actions: {
-    initializeUserId({ commit }) {
-      const token = localStorage.getItem('jwt');
-      if (token) {
-        const decoded = jwtDecode(token);
-        commit('setUserId', decoded.userId);
-        commit('setIsLoggedIn', true);
+      localStorage.removeItem('cart');
+    },
+    setIsLoggedIn(state, status) {
+      state.isLoggedIn = status;
+      if (!status) {
+        state.userId = null;
+        state.cart = [];
+        localStorage.removeItem('cart');
       }
     },
-    addToCart({ commit }, product) {
-      commit('addToCart', product);
+    setTheme(state, theme) {
+      state.theme = theme;
+      localStorage.setItem('theme', theme);
     },
+    setUserId(state, token) {
+      const decodedToken = jwtDecode(token);
+      state.userId = decodedToken.userId;
+    },
+  },
+  actions: {
+    async fetchProducts({ commit }) {
+      const response = await fetch('https://fakestoreapi.com/products');
+      const products = await response.json();
+      commit('setProducts', products);
+    }
   },
   getters: {
-    cartItems(state) {
-      return state.cart;
-    },
-  },
+    products: (state) => state.products,
+    cart: (state) => state.cart.filter(item => item.userId === state.userId),
+    cartItemCount: (state) => state.cart.reduce((count, item) => count + item.quantity, 0),
+    cartTotalCost: (state) => state.cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
+    wishlist: (state) => state.wishlist,
+    isLoggedIn: (state) => state.isLoggedIn,
+    theme: (state) => state.theme,
+  }
 });
 
 export default store;

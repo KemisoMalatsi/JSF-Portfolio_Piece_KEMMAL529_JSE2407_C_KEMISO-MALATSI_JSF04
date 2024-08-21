@@ -24,8 +24,20 @@
         <h2 class="text-lg font-semibold mb-2">{{ product.title }}</h2>
         <p class="text-gray-500 dark:text-gray-400 mb-2">{{ product.category }}</p>
         <p class="text-blue-500 dark:text-blue-300 font-bold mb-2">${{ product.price.toFixed(2) }}</p>
+        
+        <div class="flex items-center justify-between mb-2">
+          <button @click="updateQuantity(product.id, product.quantity - 1)" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">-</button>
+          <span>{{ product.quantity }}</span>
+          <button @click="updateQuantity(product.id, product.quantity + 1)" class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">+</button>
+        </div>
+        
         <button @click="removeFromCart(product.id)" class="bg-red-500 dark:bg-red-600 text-white px-4 py-2 rounded hover:bg-red-600 transition">Remove from Cart</button>
       </div>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Total: ${{ cartTotal }}</h2>
+      <button @click="clearCart" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition mt-4">Clear Cart</button>
     </div>
   </div>
 </template>
@@ -42,7 +54,10 @@ export default {
   computed: {
     cart() {
       return this.$store.getters.cart;
-    }
+    },
+    cartTotal() {
+      return this.$store.getters.cartTotalCost;
+    },
   },
   watch: {
     cart: 'updateFilteredCart',
@@ -68,6 +83,14 @@ export default {
     },
     removeFromCart(productId) {
       this.$store.commit('removeFromCart', productId);
+    },
+    updateQuantity(productId, quantity) {
+      if (quantity >= 0) {
+        this.$store.commit('updateCartItemQuantity', { productId, quantity });
+      }
+    },
+    clearCart() {
+      this.$store.commit('clearCart');
     }
   },
   created() {
