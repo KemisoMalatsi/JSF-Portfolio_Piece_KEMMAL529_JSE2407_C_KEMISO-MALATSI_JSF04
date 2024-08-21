@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header @toggle-login="showLogin = !showLogin" />
+    <Header :cartItemCount="cartItemCount" @toggle-login="showLogin = !showLogin" @logout="handleLogout" />
     <router-view></router-view> <!-- Display routed components -->
     <Login v-if="showLogin" @login="handleLogin" @cancel="showLogin = false" />
   </div>
@@ -9,22 +9,42 @@
 <script>
 import Header from '../src/components/Header.vue';
 import Login from '../src/components/Login.vue';
+import * as jwtDecode from 'jwt-decode';
 
 export default {
   components: {
     Header,
-    Login
+    Login,
   },
   data() {
     return {
-      showLogin: false, // Set to false initially
+      showLogin: false,
     };
+  },
+  computed: {
+    cartItemCount() {
+      return this.$store.getters.cartItemCount;
+    },
   },
   methods: {
     handleLogin() {
-      this.$router.push('/product-list'); // Navigate to product list on login
-      this.showLogin = false;
-    }
-  }
+      const token = localStorage.getItem('jwt');
+      if (token) {
+        const decoded = jwtDecode(token);
+        this.$store.commit('setUserId', decoded.userId);
+        this.$store.commit('setIsLoggedIn', true);
+        const redirectPath = this.$route.query.redirect || '/';
+        this.$router.push(redirectPath);
+        this.showLogin = false;
+      }
+    },
+    handleLogout() {
+      this.$store.commit('logout');
+      this.$router.push('/');
+    },
+  },
+  mounted() {
+    this.$store.dispatch('initializeUserId');
+  },
 };
 </script>

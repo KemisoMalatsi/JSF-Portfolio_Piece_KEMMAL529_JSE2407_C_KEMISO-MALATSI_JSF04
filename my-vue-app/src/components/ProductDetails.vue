@@ -1,76 +1,43 @@
 <template>
-  <div>
-    <button @click="$router.go(-1)">Back</button>
+  <div class="p-4 bg-[#caf0f8] dark:bg-gray-900">
+    <button @click="$router.go(-1)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mb-4">Back</button>
     <div v-if="product">
-      <h1>{{ product.title }}</h1>
-      <img :src="product.image" :alt="product.title" class="w-full h-auto" />
-      <p>{{ product.description }}</p>
-      <p>{{ product.price }}</p>
+      <h1 class="text-2xl font-semibold mb-4 text-black dark:text-white">{{ product.title }}</h1>
+      <img :src="product.image" :alt="product.title" class="w-full h-auto mb-4" />
+      <p class="text-gray-700 dark:text-gray-300 mb-4">{{ product.description }}</p>
+      <p class="text-blue-500 dark:text-blue-300 font-bold mb-4">${{ product.price }}</p>
       <button @click="addToCart(product)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add to Cart</button>
-      <button @click="addToWishlist(product)" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Add to Wishlist</button>
-      <button @click="removeFromCart(product.id)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Remove from Cart</button>
-      <button @click="removeFromWishlist(product.id)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Remove from Wishlist</button>
+    </div>
+    <div v-else class="text-center text-gray-600 dark:text-gray-300">
+      Loading product details...
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  computed: {
-    /**
-     * Retrieves the product based on the route parameter `id`.
-     * First, it tries to find the product in the cart items,
-     * then in the wishlist items.
-     * Logs the product to check the image URL.
-     * @returns {Object|null} The product object or null if not found.
-     */
-    product() {
-      const product = this.$store.getters.cartItems.find(product => product.id === Number(this.$route.params.id)) || 
-                      this.$store.getters.wishlistItems.find(product => product.id === Number(this.$route.params.id));
-      console.log('Product:', product); // Log product to check image URL
-      return product;
-    }
-  },
-  methods: {
-    /**
-     * Adds a product to the cart.
-     * @param {Object} product - The product to add.
-     */
-    addToCart(product) {
-      this.$store.commit('cart/addToCart', product);
-    },
-    /**
-     * Adds a product to the wishlist.
-     * @param {Object} product - The product to add.
-     */
-    addToWishlist(product) {
-      this.$store.commit('wishlist/addToWishlist', product);
-    },
-    /**
-     * Removes a product from the cart.
-     * @param {number} productId - The ID of the product to remove.
-     */
-    removeFromCart(productId) {
-      this.$store.commit('cart/removeFromCart', productId);
-    },
-    /**
-     * Removes a product from the wishlist.
-     * @param {number} productId - The ID of the product to remove.
-     */
-    removeFromWishlist(productId) {
-      this.$store.commit('wishlist/removeFromWishlist', productId);
-    }
+  data() {
+    return {
+      product: null,
+    };
   },
   created() {
-    /**
-     * Fetches products if the product is not found in the store.
-     * Forces the component to update after fetching products.
-     */
-    if (!this.product) {
-      this.$store.dispatch('fetchProducts').then(() => {
-        this.$forceUpdate(); // Force component update after fetch
-      });
-    }
-  }
+    this.fetchProductDetails();
+  },
+  methods: {
+    async fetchProductDetails() {
+      const productId = this.$route.params.id;
+      try {
+        const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
+        const data = await response.json();
+        this.product = data;
+      } catch (error) {
+        console.error('Failed to fetch product details:', error);
+      }
+    },
+    addToCart(product) {
+      this.$store.commit('addToCart', product);
+    },
+  },
 };
 </script>
