@@ -5,11 +5,13 @@
         <img src="../assets/online-shop.png" class="h-8" alt="SwiftCart Logo" />
         <span class="text-2xl font-semibold text-white">SwiftCart</span>
       </router-link>
+      
       <button @click="isOpen = !isOpen" type="button" class="text-white md:hidden">
         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
         </svg>
       </button>
+
       <div :class="{ 'block': isOpen, 'hidden': !isOpen }" class="w-full md:block md:w-auto">
         <ul class="flex flex-col md:flex-row md:space-x-8">
           <li><router-link to="/wishlist" class="text-white md:hover:text-blue-700">Wishlist</router-link></li>
@@ -22,6 +24,13 @@
           </li>
           <li><router-link to="/cart" class="text-white md:hidden">Cart</router-link></li>
           <li><button @click="$emit('toggle-login')" class="text-white">Login</button></li>
+          
+          <!-- Theme Toggle Button in Navbar -->
+          <li>
+            <button @click="toggleTheme" class="text-white md:hover:text-blue-700">
+              {{ currentTheme === 'light' ? 'Dark Mode' : 'Light Mode' }}
+            </button>
+          </li>
         </ul>
       </div>
     </nav>
@@ -29,18 +38,34 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
   data() {
     return {
-      /**
-       * A boolean to check if whether the menu is open or closed.
-       * @type {boolean}
-       */
-      isOpen: false
+      isOpen: false, // Manage mobile menu visibility
     };
+  },
+  computed: {
+    ...mapGetters(['theme']),
+    currentTheme() {
+      return this.theme;
+    }
+  },
+  methods: {
+    ...mapMutations(['setTheme']),
+    toggleTheme() {
+      const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+      this.setTheme(newTheme);
+      document.documentElement.className = newTheme;
+    }
+  },
+  mounted() {
+    document.documentElement.className = this.currentTheme;
   }
 };
 </script>
 
 <style scoped>
+/* Any additional styles specific to the header can go here */
 </style>
