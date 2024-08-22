@@ -67,7 +67,7 @@ export default {
       return this.$store.getters.cart;
     },
     cartTotal() {
-      return this.$store.getters.cartTotal;
+      return this.$store.getters.cartTotalCost;
     },
   },
   watch: {
@@ -99,10 +99,18 @@ export default {
       this.$store.commit('clearCart');
     },
     incrementQuantity(productId) {
-      this.$store.commit('incrementQuantity', productId);
+      const product = this.cart.find(item => item.id === productId);
+      if (product) {
+        this.$store.commit('updateCartItemQuantity', { productId, quantity: product.quantity + 1 });
+        this.updateFilteredCart();
+      }
     },
     decrementQuantity(productId) {
-      this.$store.commit('decrementQuantity', productId);
+      const product = this.cart.find(item => item.id === productId);
+      if (product && product.quantity > 1) {
+        this.$store.commit('updateCartItemQuantity', { productId, quantity: product.quantity - 1 });
+        this.updateFilteredCart();
+      }
     }
   },
   created() {

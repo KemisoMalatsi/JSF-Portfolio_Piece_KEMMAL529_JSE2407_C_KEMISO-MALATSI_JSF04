@@ -3,6 +3,7 @@
     <!-- Pass isAuthenticated and handleLogout as props to the Header component -->
     <Header 
       :isAuthenticated="isAuthenticated" 
+      :isDarkMode="isDarkMode"
       @toggle-login="showLogin = !showLogin" 
       @logout="logout"
       @toggle-dark-mode="toggleDarkMode"
@@ -57,7 +58,7 @@ export default {
     },
     toggleDarkMode() {
       this.isDarkMode = !this.isDarkMode; 
-      localStorage.setItem('darkMode', this.isDarkMode); 
+      localStorage.setItem('darkMode', JSON.stringify(this.isDarkMode)); 
       document.documentElement.classList.toggle('dark', this.isDarkMode);
     }
   }
